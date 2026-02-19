@@ -4,7 +4,7 @@ import { useResume } from "@/context/ResumeContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Mail, Phone, Globe, MapPin, ExternalLink, FileText } from "lucide-react";
+import { Mail, Phone, Globe, MapPin, ExternalLink, FileText, Briefcase, Cpu } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
@@ -88,10 +88,18 @@ export default function PreviewPage() {
               <Card key={project.id}>
                 <CardHeader>
                   <CardTitle>{project.title}</CardTitle>
+                   {project.role && <div className="flex items-center gap-2 text-sm text-muted-foreground pt-1"><Briefcase className="w-4 h-4"/><span>{project.role}</span></div>}
+                   {project.techStack && <div className="flex items-center gap-2 text-sm text-muted-foreground"><Cpu className="w-4 h-4"/><span>{project.techStack}</span></div>}
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground text-sm mb-4">{project.description}</p>
+                   {project.bullets && project.bullets.length > 0 && (
+                    <ul className="list-disc list-inside mb-4 space-y-1 text-foreground/80 text-sm">
+                      {project.bullets.map((bullet, i) => bullet && <li key={i}>{bullet}</li>)}
+                    </ul>
+                  )}
                    <div className="space-y-2">
+                    <h4 className="text-sm font-semibold">Evidence</h4>
                     {project.evidence.map((e, index) => (
                       <Button asChild key={index} variant="outline" size="sm" className="w-full justify-start">
                          <Link href={e.type === 'url' ? e.value : '#'} target="_blank" rel="noopener noreferrer">

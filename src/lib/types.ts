@@ -14,9 +14,14 @@ export const basicsSchema = z.object({
 export type Basics = z.infer<typeof basicsSchema>;
 
 export const aboutSchema = z.object({
-  summary: z.string().min(20, "Please provide a summary of at least 20 characters."),
+  summary: z.string().optional(),
   aboutParagraph: z.string(),
   shortBio: z.string(),
+  targetRoles: z.string().optional(),
+  strengths: z.string().optional(),
+  industries: z.string().optional(),
+  achievements: z.string().optional(),
+  tone: z.string().optional(),
 });
 
 export type About = z.infer<typeof aboutSchema>;
@@ -56,6 +61,10 @@ export const projectSchema = z.object({
   title: z.string().min(1, "Project title is required."),
   description: z.string().min(1, "Description is required."),
   evidence: z.array(projectEvidenceSchema).min(1, "At least one evidence source is required."),
+  role: z.string().optional(),
+  techStack: z.string().optional(),
+  bullets: z.array(z.string()).optional(),
+  evidenceSummary: z.string().optional(),
 });
 
 export type Project = z.infer<typeof projectSchema>;

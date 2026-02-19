@@ -13,6 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, Sparkles } from "lucide-react";
+import { Input } from "../ui/input";
 
 const initialState = {
   status: 'idle' as const,
@@ -46,7 +47,7 @@ export default function AboutForm() {
 
   useEffect(() => {
     if (state.status === 'success' && state.data) {
-      form.setValue('aboutParagraph', state.data.aboutParagraph);
+      form.setValue('aboutParagraph', state.data.longAbout);
       form.setValue('shortBio', state.data.shortBio);
       toast({
         title: "Content Generated!",
@@ -70,34 +71,82 @@ export default function AboutForm() {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <Card>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <Card className="md:col-span-1">
         <CardHeader>
           <CardTitle>AI Content Generation</CardTitle>
           <CardDescription>
-            Provide some details about your career, skills, and goals. Our AI will craft a professional 'About' section and a short bio for you.
+            Provide some details to have AI craft a professional 'About' section and a short bio for you.
           </CardDescription>
         </CardHeader>
         <form action={formAction}>
-          <CardContent>
-            <FormField
+          <CardContent className="space-y-4">
+             <FormField
               control={form.control}
-              name="summary"
+              name="targetRoles"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Your Professional Summary</FormLabel>
+                  <FormLabel>Target Roles</FormLabel>
                   <FormControl>
-                    <Textarea
-                      placeholder="e.g., A passionate software engineer with 5+ years of experience..."
-                      className="h-48"
-                      {...field}
-                    />
+                    <Input placeholder="e.g., Product Manager, UX Lead" {...field} />
                   </FormControl>
                   <FormMessage />
-                  {state.status === 'error' && <p className="text-sm font-medium text-destructive">{state.message}</p>}
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="strengths"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Key Strengths</FormLabel>
+                  <FormControl>
+                    <Input placeholder="e.g., Prototyping, User Research" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="industries"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Industries</FormLabel>
+                  <FormControl>
+                    <Input placeholder="e.g., SaaS, Healthcare, E-commerce" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+             <FormField
+              control={form.control}
+              name="achievements"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Key Achievements</FormLabel>
+                  <FormControl>
+                    <Textarea placeholder="e.g., Increased conversion by 15%..." {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+             <FormField
+              control={form.control}
+              name="tone"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Tone</FormLabel>
+                  <FormControl>
+                    <Input placeholder="e.g., Professional, Creative" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {state.status === 'error' && <p className="text-sm font-medium text-destructive">{state.message}</p>}
           </CardContent>
           <CardFooter>
             <GenerationButton />
@@ -106,7 +155,7 @@ export default function AboutForm() {
       </Card>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSave)}>
+        <form onSubmit={form.handleSubmit(onSave)} className="md:col-span-2">
           <Card>
             <CardHeader>
               <CardTitle>Your 'About' Section</CardTitle>

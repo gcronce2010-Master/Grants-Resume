@@ -4,22 +4,40 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useResume } from "@/context/ResumeContext";
-import { experienceSchema, type Experience } from "@/lib/types";
+import { experienceSchema } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, PlusCircle, Trash2 } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
+import { Loader2, PlusCircle, Sparkles, Trash2 } from "lucide-react";
+import { useFormState, useFormStatus } from "react-dom";
+import { rewriteResponsibilitiesAction } from "@/lib/actions";
+import { useEffect } from "react";
 
 const formSchema = z.object({
   experience: z.array(experienceSchema),
 });
 
+function RewriteButton() {
+  const { pending } = useFormStatus();
+  return (
+    <Button type="submit" variant="outline" size="sm" disabled={pending}>
+      {pending ? (
+        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+      ) : (
+        <Sparkles className="mr-2 h-4 w-4" />
+      )}
+      Rewrite with AI
+    </Button>
+  );
+}
+
 export default function ExperienceForm() {
   const { resumeData, setResumeData } = useResume();
   const { toast } = useToast();
+  
+  const [rewriteState, rewriteAction] = useFormState(rewriteResponsibilitiesAction, { status: 'idle', message: '', data: null });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -27,6 +45,16 @@ export default function ExperienceForm() {
       experience: resumeData.experience,
     },
   });
+
+  useEffect(() => {
+    if (rewriteState.status === 'success' && rewriteState.data && rewriteState.index !== undefined) {
+      form.setValue(`experience.${rewriteState.index}.responsibilities`, rewriteState.data.bullets as [string, string, string]);
+      toast({ title: "Success!", description: "Responsibilities rewritten." });
+    } else if (rewriteState.status === 'error') {
+      toast({ title: "Rewrite Failed", description: rewriteState.message, variant: "destructive" });
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rewriteState, toast]);
   
   const { fields, append, remove } = useFieldArray({
     control: form.control,
@@ -101,7 +129,17 @@ export default function ExperienceForm() {
                   />
                 </div>
                 <div>
-                  <FormLabel>Responsibilities (exactly 3 required)</FormLabel>
+                  <div className="flex justify-between items-center mb-2">
+                    <FormLabel>Responsibilities (exactly 3 required)</FormLabel>
+                     <form action={rewriteAction}>
+                        <input type="hidden" name="rawBullets" value={form.getValues(`experience.${index}.responsibilities`).join('\n')} />
+                        <input type="hidden" name="jobTitle" value={form.getValues(`experience.${index}.role`)} />
+                        <input type="hidden" name="company" value={form.getValues(`experience.${index}.company`)} />
+                        <input type="hidden" name="targetRole" value={resumeData.basics.currentRole} />
+                        <input type="hidden" name="index" value={index} />
+                        <RewriteButton />
+                    </form>
+                  </div>
                    <div className="space-y-2 mt-2">
                     {[0, 1, 2].map((respIndex) => (
                        <FormField
@@ -117,6 +155,7 @@ export default function ExperienceForm() {
                         />
                     ))}
                    </div>
+                   {rewriteState.status === 'error' && <p className="text-sm font-medium text-destructive">{rewriteState.message}</p>}
                 </div>
                 <Button variant="ghost" size="icon" className="absolute top-2 right-2" onClick={() => remove(index)}>
                   <Trash2 className="h-4 w-4 text-destructive" />
