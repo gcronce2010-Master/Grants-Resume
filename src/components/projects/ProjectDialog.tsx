@@ -12,7 +12,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, PlusCircle, Sparkles, Trash2 } from "lucide-react";
-import { useEffect, useActionState, useFormStatus } from "react";
+import { useEffect, useActionState } from "react";
+import { useFormStatus } from "react-dom";
 import { buildProjectFromEvidenceAction } from "@/lib/actions";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 
@@ -102,14 +103,14 @@ export function ProjectDialog({ isOpen, setIsOpen, project }: ProjectDialogProps
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent className="sm:max-w-4xl grid-cols-1 md:grid-cols-3 grid">
-        <Form {...form}>
-          <div className="md:col-span-2">
+        <div className="md:col-span-2">
             <DialogHeader>
               <DialogTitle>{project ? "Edit Project" : "Add New Project"}</DialogTitle>
               <DialogDescription>
                 Showcase your work by adding a project to your portfolio.
               </DialogDescription>
             </DialogHeader>
+          <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 py-4">
               <FormField control={form.control} name="title" render={({ field }) => (
                 <FormItem>
@@ -195,12 +196,14 @@ export function ProjectDialog({ isOpen, setIsOpen, project }: ProjectDialogProps
                 </Button>
               </DialogFooter>
             </form>
-          </div>
-          <div className="md:col-span-1">
-            <Card className="h-full">
-              <CardHeader>
-                <CardTitle>AI Generation</CardTitle>
-              </CardHeader>
+          </Form>
+        </div>
+        <div className="md:col-span-1">
+          <Card className="h-full">
+            <CardHeader>
+              <CardTitle>AI Generation</CardTitle>
+            </CardHeader>
+            <Form {...form}>
               <form action={generateAction} className="h-full flex flex-col">
                 <CardContent className="flex-grow">
                   <input type="hidden" name="projectName" value={form.watch('title')} />
@@ -229,9 +232,9 @@ export function ProjectDialog({ isOpen, setIsOpen, project }: ProjectDialogProps
                   <GenerateButton />
                 </DialogFooter>
               </form>
-            </Card>
-          </div>
-        </Form>
+            </Form>
+          </Card>
+        </div>
       </DialogContent>
     </Dialog>
   );

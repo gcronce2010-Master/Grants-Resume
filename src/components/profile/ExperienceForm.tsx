@@ -11,9 +11,9 @@ import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, PlusCircle, Sparkles, Trash2 } from "lucide-react";
-import { useActionState, useFormStatus } from "react";
+import { useActionState, useEffect } from "react";
+import { useFormStatus } from "react-dom";
 import { rewriteResponsibilitiesAction } from "@/lib/actions";
-import { useEffect } from "react";
 
 const formSchema = z.object({
   experience: z.array(experienceSchema),
