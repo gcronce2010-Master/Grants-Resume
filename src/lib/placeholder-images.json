@@ -3,8 +3,8 @@
     {
       "id": "profile-picture",
       "description": "A placeholder for the user's profile picture.",
-      "imageUrl": "https://images.unsplash.com/photo-1539125530496-3ca408f9c2d9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxwcm9maWxlJTIwcG9ydHJhaXR8ZW58MHx8fHwxNzcxMzc1ODA3fDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "profile portrait"
+      "imageUrl": "https://i.postimg.cc/FKrtJVjs/20220112-131155.jpg",
+      "imageHint": "cat portrait"
     }
   ]
 }
