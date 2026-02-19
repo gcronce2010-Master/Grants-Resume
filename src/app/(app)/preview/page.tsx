@@ -7,10 +7,26 @@ import { Separator } from "@/components/ui/separator";
 import { Mail, Phone, Globe, MapPin, ExternalLink, FileText, Briefcase, Cpu } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
+import QRCode from "react-qr-code";
 
 export default function PreviewPage() {
   const { resumeData } = useResume();
   const { basics, about, experience, education, projects } = resumeData;
+  const [url, setUrl] = useState("");
+  const [fgColor, setFgColor] = useState('hsl(224 71% 4%)');
+  const [bgColor, setBgColor] = useState('hsl(0 0% 100%)');
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setUrl(window.location.href);
+      const styles = getComputedStyle(document.documentElement);
+      const fg = styles.getPropertyValue('--foreground').trim();
+      const bg = styles.getPropertyValue('--card').trim();
+      setFgColor(`hsl(${fg})`);
+      setBgColor(`hsl(${bg})`);
+    }
+  }, []);
 
   const getInitials = (name: string) => {
     return name.split(' ').map(n => n[0]).join('').toUpperCase();
@@ -18,24 +34,32 @@ export default function PreviewPage() {
 
   return (
     <div className="bg-card p-8 md:p-12 rounded-xl shadow-lg max-w-5xl mx-auto">
-      <header className="flex flex-col md:flex-row gap-8 items-start">
-        <Avatar className="w-32 h-32 text-4xl">
-          <AvatarImage src={basics.profilePicture} alt={basics.name} data-ai-hint="profile portrait" />
-          <AvatarFallback>{getInitials(basics.name)}</AvatarFallback>
-        </Avatar>
-        <div className="flex-grow">
-          <h1 className="text-5xl font-bold text-primary">{basics.name}</h1>
-          <h2 className="text-2xl font-medium text-foreground/80 mt-1">{basics.currentRole} at {basics.company}</h2>
-          <p className="text-muted-foreground mt-4 text-lg">
-            {about.shortBio || "A dedicated professional with a passion for excellence."}
-          </p>
-          <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground mt-6">
-              {basics.email && <div className="flex items-center gap-2"><Mail className="w-4 h-4"/>{basics.email}</div>}
-              {basics.phone && <div className="flex items-center gap-2"><Phone className="w-4 h-4"/>{basics.phone}</div>}
-              {basics.location && <div className="flex items-center gap-2"><MapPin className="w-4 h-4"/>{basics.location}</div>}
-              {basics.website && <div className="flex items-center gap-2"><Globe className="w-4 h-4"/><Link href={basics.website} className="text-primary hover:underline">{basics.website}</Link></div>}
-          </div>
+      <header className="flex flex-col md:flex-row gap-8 items-start justify-between">
+        <div className="flex flex-col md:flex-row gap-8 items-start flex-grow">
+            <Avatar className="w-32 h-32 text-4xl">
+              <AvatarImage src={basics.profilePicture} alt={basics.name} data-ai-hint="profile portrait" />
+              <AvatarFallback>{getInitials(basics.name)}</AvatarFallback>
+            </Avatar>
+            <div className="flex-grow">
+              <h1 className="text-5xl font-bold text-primary">{basics.name}</h1>
+              <h2 className="text-2xl font-medium text-foreground/80 mt-1">{basics.currentRole} at {basics.company}</h2>
+              <p className="text-muted-foreground mt-4 text-lg">
+                {about.shortBio || "A dedicated professional with a passion for excellence."}
+              </p>
+              <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground mt-6">
+                  {basics.email && <div className="flex items-center gap-2"><Mail className="w-4 h-4"/>{basics.email}</div>}
+                  {basics.phone && <div className="flex items-center gap-2"><Phone className="w-4 h-4"/>{basics.phone}</div>}
+                  {basics.location && <div className="flex items-center gap-2"><MapPin className="w-4 h-4"/>{basics.location}</div>}
+                  {basics.website && <div className="flex items-center gap-2"><Globe className="w-4 h-4"/><Link href={basics.website} className="text-primary hover:underline">{basics.website}</Link></div>}
+              </div>
+            </div>
         </div>
+        {url && (
+            <div className="text-center p-3 border rounded-lg hidden md:block">
+                <QRCode value={url} size={100} bgColor={bgColor} fgColor={fgColor} />
+                <p className="text-xs text-muted-foreground mt-2">Scan to view</p>
+            </div>
+        )}
       </header>
 
       <Separator className="my-10" />
