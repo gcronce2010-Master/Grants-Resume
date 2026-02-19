@@ -11,19 +11,17 @@ import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, PlusCircle, Sparkles, Trash2 } from "lucide-react";
-import { useActionState, useEffect } from "react";
-import { useFormStatus } from "react-dom";
+import { useActionState, useEffect, useState } from "react";
 import { rewriteResponsibilitiesAction } from "@/lib/actions";
 
 const formSchema = z.object({
   experience: z.array(experienceSchema),
 });
 
-function RewriteButton() {
-  const { pending } = useFormStatus();
+function RewriteButton({ onClick, isPending }: { onClick: () => void; isPending: boolean; }) {
   return (
-    <Button type="submit" variant="outline" size="sm" disabled={pending}>
-      {pending ? (
+    <Button type="button" variant="outline" size="sm" disabled={isPending} onClick={onClick}>
+      {isPending ? (
         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
       ) : (
         <Sparkles className="mr-2 h-4 w-4" />
@@ -36,6 +34,7 @@ function RewriteButton() {
 export default function ExperienceForm() {
   const { resumeData, setResumeData } = useResume();
   const { toast } = useToast();
+  const [pendingRewrite, setPendingRewrite] = useState<number | null>(null);
   
   const [rewriteState, rewriteAction] = useActionState(rewriteResponsibilitiesAction, { status: 'idle', message: '', data: null });
 
@@ -47,6 +46,9 @@ export default function ExperienceForm() {
   });
 
   useEffect(() => {
+    if (rewriteState.status === 'success' || rewriteState.status === 'error') {
+      setPendingRewrite(null);
+    }
     if (rewriteState.status === 'success' && rewriteState.data && rewriteState.index !== undefined) {
       form.setValue(`experience.${rewriteState.index}.responsibilities`, rewriteState.data.bullets as [string, string, string]);
       toast({ title: "Success!", description: "Responsibilities rewritten." });
@@ -54,7 +56,7 @@ export default function ExperienceForm() {
       toast({ title: "Rewrite Failed", description: rewriteState.message, variant: "destructive" });
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [rewriteState, toast]);
+  }, [rewriteState, toast, form]);
   
   const { fields, append, remove } = useFieldArray({
     control: form.control,
@@ -69,6 +71,17 @@ export default function ExperienceForm() {
     });
   };
   
+  const handleRewrite = (index: number) => {
+    setPendingRewrite(index);
+    const formData = new FormData();
+    formData.set('rawBullets', form.getValues(`experience.${index}.responsibilities`).join('\n'));
+    formData.set('jobTitle', form.getValues(`experience.${index}.role`));
+    formData.set('company', form.getValues(`experience.${index}.company`));
+    formData.set('targetRole', resumeData.basics.currentRole);
+    formData.set('index', String(index));
+    rewriteAction(formData);
+  };
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -131,14 +144,7 @@ export default function ExperienceForm() {
                 <div>
                   <div className="flex justify-between items-center mb-2">
                     <FormLabel>Responsibilities (exactly 3 required)</FormLabel>
-                     <form action={rewriteAction}>
-                        <input type="hidden" name="rawBullets" value={form.getValues(`experience.${index}.responsibilities`).join('\n')} />
-                        <input type="hidden" name="jobTitle" value={form.getValues(`experience.${index}.role`)} />
-                        <input type="hidden" name="company" value={form.getValues(`experience.${index}.company`)} />
-                        <input type="hidden" name="targetRole" value={resumeData.basics.currentRole} />
-                        <input type="hidden" name="index" value={index} />
-                        <RewriteButton />
-                    </form>
+                    <RewriteButton isPending={pendingRewrite === index} onClick={() => handleRewrite(index)} />
                   </div>
                    <div className="space-y-2 mt-2">
                     {[0, 1, 2].map((respIndex) => (
@@ -155,7 +161,7 @@ export default function ExperienceForm() {
                         />
                     ))}
                    </div>
-                   {rewriteState.status === 'error' && <p className="text-sm font-medium text-destructive">{rewriteState.message}</p>}
+                   {rewriteState.status === 'error' && rewriteState.index === index && <p className="text-sm font-medium text-destructive">{rewriteState.message}</p>}
                 </div>
                 <Button variant="ghost" size="icon" className="absolute top-2 right-2" onClick={() => remove(index)}>
                   <Trash2 className="h-4 w-4 text-destructive" />
