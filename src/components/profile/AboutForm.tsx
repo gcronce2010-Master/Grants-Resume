@@ -71,90 +71,90 @@ export default function AboutForm() {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-      <Card className="md:col-span-1">
-        <CardHeader>
-          <CardTitle>AI Content Generation</CardTitle>
-          <CardDescription>
-            Provide some details to have AI craft a professional 'About' section and a short bio for you.
-          </CardDescription>
-        </CardHeader>
-        <form action={formAction}>
-          <CardContent className="space-y-4">
-             <FormField
-              control={form.control}
-              name="targetRoles"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Target Roles</FormLabel>
-                  <FormControl>
-                    <Input placeholder="e.g., Product Manager, UX Lead" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="strengths"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Key Strengths</FormLabel>
-                  <FormControl>
-                    <Input placeholder="e.g., Prototyping, User Research" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="industries"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Industries</FormLabel>
-                  <FormControl>
-                    <Input placeholder="e.g., SaaS, Healthcare, E-commerce" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-             <FormField
-              control={form.control}
-              name="achievements"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Key Achievements</FormLabel>
-                  <FormControl>
-                    <Textarea placeholder="e.g., Increased conversion by 15%..." {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-             <FormField
-              control={form.control}
-              name="tone"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Tone</FormLabel>
-                  <FormControl>
-                    <Input placeholder="e.g., Professional, Creative" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            {state.status === 'error' && <p className="text-sm font-medium text-destructive">{state.message}</p>}
-          </CardContent>
-          <CardFooter>
-            <GenerationButton />
-          </CardFooter>
-        </form>
-      </Card>
+    <Form {...form}>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <Card className="md:col-span-1">
+          <CardHeader>
+            <CardTitle>AI Content Generation</CardTitle>
+            <CardDescription>
+              Provide some details to have AI craft a professional 'About' section and a short bio for you.
+            </CardDescription>
+          </CardHeader>
+          <form action={formAction}>
+            <CardContent className="space-y-4">
+               <FormField
+                control={form.control}
+                name="targetRoles"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Target Roles</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g., Product Manager, UX Lead" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="strengths"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Key Strengths</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g., Prototyping, User Research" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="industries"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Industries</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g., SaaS, Healthcare, E-commerce" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+               <FormField
+                control={form.control}
+                name="achievements"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Key Achievements</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="e.g., Increased conversion by 15%..." {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+               <FormField
+                control={form.control}
+                name="tone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Tone</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g., Professional, Creative" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {state.status === 'error' && <p className="text-sm font-medium text-destructive">{state.message}</p>}
+            </CardContent>
+            <CardFooter>
+              <GenerationButton />
+            </CardFooter>
+          </form>
+        </Card>
 
-      <Form {...form}>
         <form onSubmit={form.handleSubmit(onSave)} className="md:col-span-2">
           <Card>
             <CardHeader>
@@ -203,7 +203,7 @@ export default function AboutForm() {
             </CardFooter>
           </Card>
         </form>
-      </Form>
-    </div>
+      </div>
+    </Form>
   );
 }
