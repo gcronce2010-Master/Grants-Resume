@@ -2,7 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState, useFormStatus } from "react";
 import { useEffect } from "react";
 import { useResume } from "@/context/ResumeContext";
 import { aboutSchema, type About } from "@/lib/types";
@@ -38,7 +38,7 @@ function GenerationButton() {
 export default function AboutForm() {
   const { resumeData, setResumeData } = useResume();
   const { toast } = useToast();
-  const [state, formAction] = useFormState(generateAboutAction, initialState);
+  const [state, formAction] = useActionState(generateAboutAction, initialState);
 
   const form = useForm<About>({
     resolver: zodResolver(aboutSchema),

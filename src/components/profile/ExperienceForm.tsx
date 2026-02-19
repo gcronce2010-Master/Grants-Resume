@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, PlusCircle, Sparkles, Trash2 } from "lucide-react";
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState, useFormStatus } from "react";
 import { rewriteResponsibilitiesAction } from "@/lib/actions";
 import { useEffect } from "react";
 
@@ -37,7 +37,7 @@ export default function ExperienceForm() {
   const { resumeData, setResumeData } = useResume();
   const { toast } = useToast();
   
-  const [rewriteState, rewriteAction] = useFormState(rewriteResponsibilitiesAction, { status: 'idle', message: '', data: null });
+  const [rewriteState, rewriteAction] = useActionState(rewriteResponsibilitiesAction, { status: 'idle', message: '', data: null });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

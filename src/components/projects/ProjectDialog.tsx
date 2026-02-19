@@ -12,8 +12,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, PlusCircle, Sparkles, Trash2 } from "lucide-react";
-import { useEffect } from "react";
-import { useFormState, useFormStatus } from "react-dom";
+import { useEffect, useActionState, useFormStatus } from "react";
 import { buildProjectFromEvidenceAction } from "@/lib/actions";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Separator } from "../ui/separator";
@@ -38,7 +37,7 @@ export function ProjectDialog({ isOpen, setIsOpen, project }: ProjectDialogProps
   const { setResumeData } = useResume();
   const { toast } = useToast();
   
-  const [generateState, generateAction] = useFormState(buildProjectFromEvidenceAction, { status: 'idle', message: '', data: null });
+  const [generateState, generateAction] = useActionState(buildProjectFromEvidenceAction, { status: 'idle', message: '', data: null });
 
   const form = useForm<Project>({
     resolver: zodResolver(projectSchema),
