@@ -55,6 +55,13 @@ const initialResumeData: ResumeData = {
   ],
   education: [
     {
+      id: 'edu10',
+      institution: 'Forage',
+      degree: 'Cloud Platform Job Simulation',
+      startDate: 'Feb 2024',
+      endDate: 'Feb 2024',
+    },
+    {
       id: 'edu9',
       institution: 'Software Engineering Job Simulation',
       degree: 'Certificate of Completion',
