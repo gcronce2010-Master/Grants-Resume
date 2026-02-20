@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
 const navItems = [
-  { href: '/', label: 'Profile' },
+  { href: '/profile', label: 'Profile' },
   { href: '/projects', label: 'Projects' },
   { href: '/preview', label: 'Preview' },
 ];
@@ -18,7 +18,7 @@ export function Header() {
   return (
     <header className="bg-card border-b sticky top-0 z-50">
       <div className="container mx-auto px-4 flex items-center justify-between h-16">
-        <Link href="/" className="flex items-center gap-2">
+        <Link href="/profile" className="flex items-center gap-2">
           <NotebookText className="h-6 w-6 text-primary" />
           <span className="font-bold text-lg text-foreground">ResumeKeeper</span>
         </Link>
