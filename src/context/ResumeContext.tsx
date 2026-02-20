@@ -143,7 +143,27 @@ const initialResumeData: ResumeData = {
         }
       ],
       evidenceSummary: '',
-    }],
+    },
+    {
+      id: 'firebase-studio-project',
+      title: 'Firebase Studio Project',
+      description: 'Developed and managed a web application using Firebase Studio, an AI-assisted development environment for building with the Firebase and Google ecosystem.',
+      role: 'Developer',
+      techStack: 'Firebase, Google Cloud, Next.js, Genkit',
+      bullets: [
+        'Utilized AI-powered code generation and completion to accelerate development.',
+        'Integrated various Firebase services such as Firestore and Authentication.',
+        'Leveraged the cloud-based environment for seamless building, testing, and iteration.'
+      ],
+      evidence: [
+        {
+          type: 'url',
+          value: 'https://studio.firebase.google.com/studio-9194825074'
+        }
+      ],
+      evidenceSummary: '',
+    }
+  ],
 };
 
 type ResumeContextType = {
