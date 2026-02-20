@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
@@ -54,6 +55,13 @@ const initialResumeData: ResumeData = {
     }
   ],
   education: [
+    {
+      id: 'edu7',
+      institution: 'Shields Up: Cybersecurity Job Simulation',
+      degree: 'Certificate of Completion',
+      startDate: 'Feb 2024',
+      endDate: 'Feb 2024',
+    },
     {
       id: 'edu6',
       institution: 'GenAI Job Simulation',
