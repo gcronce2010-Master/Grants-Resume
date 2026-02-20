@@ -12,7 +12,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, PlusCircle, Sparkles, Trash2 } from "lucide-react";
-import { useEffect, useActionState } from "react";
+import { useEffect, useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { buildProjectFromEvidenceAction } from "@/lib/actions";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
@@ -39,18 +39,36 @@ export function ProjectDialog({ isOpen, setIsOpen, project }: ProjectDialogProps
   
   const [generateState, generateAction] = useActionState(buildProjectFromEvidenceAction, { status: 'idle', message: '', data: null });
 
+  const [defaultProject, setDefaultProject] = useState<Project>({
+    id: '',
+    title: '',
+    description: '',
+    evidence: [],
+    role: '',
+    techStack: '',
+    bullets: [],
+    evidenceSummary: '',
+  });
+
+  useEffect(() => {
+    // Only generate a UUID on the client when the dialog is opened for a new project.
+    if (isOpen && !project) {
+      setDefaultProject({
+        id: crypto.randomUUID(),
+        title: "",
+        description: "",
+        evidence: [],
+        role: "",
+        techStack: "",
+        bullets: [],
+        evidenceSummary: "",
+      });
+    }
+  }, [isOpen, project]);
+
   const form = useForm<Project>({
     resolver: zodResolver(projectSchema),
-    defaultValues: project || {
-      id: crypto.randomUUID(),
-      title: "",
-      description: "",
-      evidence: [],
-      role: "",
-      techStack: "",
-      bullets: [],
-      evidenceSummary: "",
-    },
+    defaultValues: project || defaultProject,
   });
 
   useEffect(() => {
@@ -65,18 +83,12 @@ export function ProjectDialog({ isOpen, setIsOpen, project }: ProjectDialogProps
   }, [generateState, toast]);
 
   useEffect(() => {
-    form.reset(project || {
-      id: crypto.randomUUID(),
-      title: "",
-      description: "",
-      evidence: [],
-      role: "",
-      techStack: "",
-      bullets: [],
-      evidenceSummary: "",
-    });
+    // Reset the form when the dialog opens or the project data changes.
+    if (isOpen) {
+      form.reset(project || defaultProject);
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [project, isOpen]);
+  }, [project, isOpen, defaultProject]);
 
   const { fields, append, remove } = useFieldArray({
     control: form.control,
