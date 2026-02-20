@@ -55,6 +55,13 @@ const initialResumeData: ResumeData = {
   ],
   education: [
     {
+      id: 'edu6',
+      institution: 'GenAI Job Simulation',
+      degree: 'Certificate of Completion',
+      startDate: 'Feb 2024',
+      endDate: 'Feb 2024',
+    },
+    {
       id: 'edu1',
       institution: 'Devry University',
       degree: 'Information Technology and Networking',
