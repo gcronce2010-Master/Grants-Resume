@@ -63,8 +63,8 @@ const initialResumeData: ResumeData = {
     },
     {
       id: 'edu9',
-      institution: 'Software Engineering Job Simulation',
-      degree: 'Certificate of Completion',
+      institution: 'Forage',
+      degree: 'Software Engineering Job Simulation',
       startDate: 'Feb 2024',
       endDate: 'Feb 2024',
     },
@@ -77,15 +77,15 @@ const initialResumeData: ResumeData = {
     },
     {
       id: 'edu7',
-      institution: 'Shields Up: Cybersecurity Job Simulation',
-      degree: 'Certificate of Completion',
+      institution: 'Forage',
+      degree: 'Shields Up: Cybersecurity Job Simulation',
       startDate: 'Feb 2024',
       endDate: 'Feb 2024',
     },
     {
       id: 'edu6',
-      institution: 'GenAI Job Simulation',
-      degree: 'Certificate of Completion',
+      institution: 'Forage',
+      degree: 'GenAI Job Simulation',
       startDate: 'Feb 2024',
       endDate: 'Feb 2024',
     },
@@ -159,6 +159,25 @@ const initialResumeData: ResumeData = {
         {
           type: 'url',
           value: 'https://studio.firebase.google.com/studio-9194825074'
+        }
+      ],
+      evidenceSummary: '',
+    },
+    {
+      id: 'cloud-dev-env-project',
+      title: 'Cloud Development Environment',
+      description: 'A web application developed and deployed using a Google Cloud Workstation, showcasing the ability to work in modern, cloud-native development environments.',
+      role: 'Developer',
+      techStack: 'Google Cloud, Next.js, Docker',
+      bullets: [
+        'Configured and utilized a cloud-based development workstation for building a web application.',
+        'Demonstrated a portable and scalable development setup.',
+        'Gained experience with cloud-based development workflows and tools.'
+      ],
+      evidence: [
+        {
+          type: 'url',
+          value: 'https://9000-firebase-studio-1770862106164.cluster-rbhjeem4mfgjwrkwwvustjr6em.cloudworkstations.dev'
         }
       ],
       evidenceSummary: '',
