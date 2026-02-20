@@ -39,36 +39,19 @@ export function ProjectDialog({ isOpen, setIsOpen, project }: ProjectDialogProps
   
   const [generateState, generateAction] = useActionState(buildProjectFromEvidenceAction, { status: 'idle', message: '', data: null });
 
-  const [defaultProject, setDefaultProject] = useState<Project>({
-    id: '',
-    title: '',
-    description: '',
-    evidence: [],
-    role: '',
-    techStack: '',
-    bullets: [],
-    evidenceSummary: '',
-  });
-
-  useEffect(() => {
-    // Only generate a UUID on the client when the dialog is opened for a new project.
-    if (isOpen && !project) {
-      setDefaultProject({
-        id: crypto.randomUUID(),
-        title: "",
-        description: "",
-        evidence: [],
-        role: "",
-        techStack: "",
-        bullets: [],
-        evidenceSummary: "",
-      });
-    }
-  }, [isOpen, project]);
+  const defaultValues: Omit<Project, 'id'> & { id?: string } = {
+      title: '',
+      description: '',
+      evidence: [],
+      role: '',
+      techStack: '',
+      bullets: [],
+      evidenceSummary: '',
+  }
 
   const form = useForm<Project>({
     resolver: zodResolver(projectSchema),
-    defaultValues: project || defaultProject,
+    defaultValues: project || { ...defaultValues, id: '' },
   });
 
   useEffect(() => {
@@ -85,10 +68,10 @@ export function ProjectDialog({ isOpen, setIsOpen, project }: ProjectDialogProps
   useEffect(() => {
     // Reset the form when the dialog opens or the project data changes.
     if (isOpen) {
-      form.reset(project || defaultProject);
+      form.reset(project || { ...defaultValues, id: '' });
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [project, isOpen, defaultProject]);
+  }, [project, isOpen]);
 
   const { fields, append, remove } = useFieldArray({
     control: form.control,
@@ -96,14 +79,16 @@ export function ProjectDialog({ isOpen, setIsOpen, project }: ProjectDialogProps
   });
 
   const onSubmit = (data: Project) => {
+    const projectToSave = { ...data, id: data.id || crypto.randomUUID() };
+
     setResumeData((prev) => {
-      const existingProjectIndex = prev.projects.findIndex((p) => p.id === data.id);
+      const existingProjectIndex = prev.projects.findIndex((p) => p.id === projectToSave.id);
       if (existingProjectIndex > -1) {
         const updatedProjects = [...prev.projects];
-        updatedProjects[existingProjectIndex] = data;
+        updatedProjects[existingProjectIndex] = projectToSave;
         return { ...prev, projects: updatedProjects };
       }
-      return { ...prev, projects: [...prev.projects, data] };
+      return { ...prev, projects: [...prev.projects, projectToSave] };
     });
     toast({
       title: "Success!",
@@ -195,7 +180,7 @@ export function ProjectDialog({ isOpen, setIsOpen, project }: ProjectDialogProps
                     </div>
                   ))}
                 </div>
-                <Button type="button" variant="outline" size="sm" className="mt-2" onClick={() => append({ type: 'url', value: '' })}>
+                <Button type="button" variant="outline" size="sm" className="mt-2" onClick={() => append({ id: crypto.randomUUID(), type: 'url', value: '' })}>
                   <PlusCircle className="mr-2 h-4 w-4" /> Add Evidence
                 </Button>
                 <FormMessage>{form.formState.errors.evidence?.root?.message}</FormMessage>

@@ -124,8 +124,8 @@ export default function PreviewPage() {
                   )}
                    <div className="space-y-2">
                     <h4 className="text-sm font-semibold">Evidence</h4>
-                    {project.evidence.map((e, index) => (
-                      <Button asChild key={index} variant="outline" size="sm" className="w-full justify-start">
+                    {project.evidence.map((e) => (
+                      <Button asChild key={e.id} variant="outline" size="sm" className="w-full justify-start">
                          <Link href={e.type === 'url' ? e.value : '#'} target="_blank" rel="noopener noreferrer">
                             {e.type === 'url' ? <ExternalLink className="mr-2 h-4 w-4" /> : <FileText className="mr-2 h-4 w-4" />}
                             <span className="truncate">{e.value}</span>

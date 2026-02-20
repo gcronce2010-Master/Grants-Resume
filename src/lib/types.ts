@@ -52,6 +52,7 @@ export const educationSchema = z.object({
 export type Education = z.infer<typeof educationSchema>;
 
 export const projectEvidenceSchema = z.object({
+  id: z.string(),
   type: z.enum(["url", "file"]),
   value: z.string().min(1, "Evidence value is required."),
 });

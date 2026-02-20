@@ -138,6 +138,7 @@ const initialResumeData: ResumeData = {
       ],
       evidence: [
         {
+          id: 'ev1',
           type: 'url',
           value: 'https://9000-firebase-studio-1770862106164.cluster-rbhjeem4mfgjwrkwwvustjr6em.cloudworkstations.dev'
         }
@@ -157,6 +158,7 @@ const initialResumeData: ResumeData = {
       ],
       evidence: [
         {
+          id: 'ev2',
           type: 'url',
           value: 'https://studio.firebase.google.com/studio-9194825074'
         }
@@ -176,6 +178,7 @@ const initialResumeData: ResumeData = {
       ],
       evidence: [
         {
+          id: 'ev3',
           type: 'url',
           value: 'https://9000-firebase-studio-1770862106164.cluster-rbhjeem4mfgjwrkwwvustjr6em.cloudworkstations.dev'
         }
