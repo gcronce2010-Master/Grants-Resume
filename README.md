@@ -1,4 +1,4 @@
-# Firebase Studio
+Grants Resume 
 
 This is a NextJS starter in Firebase Studio.
 
