@@ -13,8 +13,8 @@ const initialResumeData: ResumeData = {
     phone: '+1 810 941 7360',
     location: 'Lexington, MI',
     website: '',
-    currentRole: 'Assistant Store Manager',
-    company: 'Rent a Center',
+    currentRole: '',
+    company: '',
     profilePicture: profilePicPlaceholder?.imageUrl || ''
   },
   about: {
@@ -127,7 +127,7 @@ const initialResumeData: ResumeData = {
   ],
   projects: [{
       id: 'resume-keeper-project',
-      title: 'ResumeKeeper AI',
+      title: 'Grants Resume AI',
       description: 'An AI-powered resume builder that helps users create professional resumes with features like AI-generated content for about sections, job responsibilities, and project summaries.',
       role: 'Full Stack Developer',
       techStack: 'Next.js, React, TypeScript, TailwindCSS, Genkit, Firebase',

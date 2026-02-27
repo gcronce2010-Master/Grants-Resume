@@ -42,7 +42,11 @@ export default function PreviewPage() {
             </Avatar>
             <div className="flex-grow">
               <h1 className="text-5xl font-bold text-primary">{basics.name}</h1>
-              <h2 className="text-2xl font-medium text-foreground/80 mt-1">{basics.currentRole} at {basics.company}</h2>
+              {basics.currentRole && (
+                <h2 className="text-2xl font-medium text-foreground/80 mt-1">
+                  {basics.currentRole}{basics.company ? ` at ${basics.company}` : ''}
+                </h2>
+              )}
               <p className="text-muted-foreground mt-4 text-lg">
                 {about.shortBio || "A dedicated professional with a passion for excellence."}
               </p>

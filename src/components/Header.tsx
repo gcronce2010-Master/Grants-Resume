@@ -20,7 +20,7 @@ export function Header() {
       <div className="container mx-auto px-4 flex items-center justify-between h-16">
         <Link href="/profile" className="flex items-center gap-2">
           <NotebookText className="h-6 w-6 text-primary" />
-          <span className="font-bold text-lg text-foreground">ResumeKeeper</span>
+          <span className="font-bold text-lg text-foreground">Grants Resume</span>
         </Link>
         <nav className="hidden md:flex items-center gap-2">
           {navItems.map((item) => (

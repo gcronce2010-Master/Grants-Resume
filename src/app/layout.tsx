@@ -4,8 +4,8 @@ import { Toaster } from '@/components/ui/toaster';
 import { ResumeProvider } from '@/context/ResumeContext';
 
 export const metadata: Metadata = {
-  title: 'ResumeKeeper',
-  description: 'Create and maintain an online resume/portfolio with ResumeKeeper.',
+  title: 'Grants Resume',
+  description: 'Create and maintain an online resume/portfolio with Grants Resume.',
 };
 
 export default function RootLayout({
